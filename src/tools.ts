@@ -60,12 +60,23 @@ export function registerTools(server: McpServer, config: Config): void {
         path: o.path,
         trading: o.isTrading,
       }));
-      return textResult({
+      const result: Record<string, unknown> = {
         count: list.length,
         domains: listDomains(),
         trading_enabled: config.enableTrading,
         apis: list,
-      });
+      };
+      if (!config.enableTrading) {
+        const hidden = loadOperations().filter((o) => o.isTrading).length;
+        result.trading_locked = {
+          hidden_count: hidden,
+          how_to_enable:
+            "주문(매수/매도/정정/취소) API 는 안전을 위해 기본 비활성 상태이며 목록에서 숨겨져 있습니다. " +
+            "사용하려면 MCP 설정(env)에 NHPLUG_ENABLE_TRADING=true 를 추가한 뒤 Claude Desktop 을 완전히 종료했다가 다시 실행하세요. " +
+            "실제 주문이 체결될 수 있으니 반드시 모의투자 환경에서 충분히 검증한 뒤 사용하세요.",
+        };
+      }
+      return textResult(result);
     }
   );
 
