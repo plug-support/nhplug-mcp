@@ -1,0 +1,45 @@
+{
+  "name": "@nhplug/mcp-server",
+  "version": "0.1.0",
+  "description": "NH투자증권 Open API를 Claude 등 MCP 클라이언트에서 사용하기 위한 로컬 MCP 서버",
+  "license": "MIT",
+  "author": "NH Investment & Securities Open API (apisupport@nhsec.com)",
+  "homepage": "https://www.nhplug.com/intro",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhsec/nhplug-mcp.git"
+  },
+  "type": "module",
+  "bin": {
+    "nhplug-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "specs",
+    "README.md",
+    ".env.example"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js",
+    "selftest": "node scripts/selftest.mjs",
+    "prepare": "tsc",
+    "prepublishOnly": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "dotenv": "^16.4.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  }
+}

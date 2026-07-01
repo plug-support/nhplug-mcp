@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# secrets — NEVER commit real credentials
+.env
+*.env
+!.env.example
+
+# logs / os
+*.log
+.DS_Store
+Thumbs.db
+verify.mjs
+
+# scratch / test files
+_smoke*.mjs
+run_smoke.mjs
+src/_smoke.mts
