@@ -103,6 +103,7 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 | `call_api` | 메타 | operationId + 입력값으로 실제 호출. 131개 엔드포인트 전부 커버. |
 | `get_stock_price` | 단축 | 국내주식 현재가 (종목코드만 입력). |
 | `get_stock_balance` | 단축 | 국내주식 계좌 잔고. |
+| `list_accounts` | 단축 | 보유 계좌 목록 조회 (잔고·주문 전 계좌번호 확보용, `POST /n2/acctinfo`). |
 
 **동작 흐름(메타 도구):** `list_apis` 로 원하는 API 를 찾고 → `describe_api` 로 입력값을 확인한 뒤 → `call_api` 로 호출합니다. 자주 쓰는 현재가·잔고는 단축 도구로 한 번에 호출할 수 있습니다.
 

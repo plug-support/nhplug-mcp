@@ -178,4 +178,19 @@ export function registerTools(server: McpServer, config: Config): void {
       }
     }
   );
+
+  // ── 단축 도구 3: 계좌 목록 조회 (플랫폼 공통 /n2/acctinfo) ───────────
+  server.tool(
+    "list_accounts",
+    "로그인 자격증명(앱키/시크릿)에 연결된 보유 계좌 목록을 조회합니다. 잔고조회·주문 전에 계좌번호(act_no)를 확보하는 용도입니다. 입력값은 없습니다. (플랫폼 공통 엔드포인트 POST /n2/acctinfo)",
+    {},
+    async () => {
+      try {
+        const res = await callRest(config, "/n2/acctinfo", {});
+        return textResult(res);
+      } catch (e) {
+        return errorResult(String(e instanceof Error ? e.message : e));
+      }
+    }
+  );
 }
