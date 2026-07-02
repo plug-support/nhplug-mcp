@@ -12,32 +12,42 @@ NH투자증권 Open API 를 **Claude Desktop** 등 MCP 클라이언트에서 바
 
 ## 1. 사전 요건
 
-1. **Node.js 18 이상** — [nodejs.org](https://nodejs.org) 에서 설치. (`node -v` 로 확인)
+1. **Node.js 18 이상** — [nodejs.org](https://nodejs.org) 에서 설치. (`node -v` 로 확인. `npx` 는 Node 에 포함)
 2. **NH투자증권 Open API 앱키/시크릿** — 포털 [www.nhplug.com](https://www.nhplug.com/intro) 에서 발급.
-3. **API 서버 네트워크 접근** — 이 MCP 는 당신 PC 에서 `*.nhplug.com` API 서버로 직접 연결합니다. 사내망 등에서만 접근 가능한 환경이라면, MCP 를 실행하는 PC 도 그 네트워크에 있어야 합니다.
+3. **Git** — 방법 A(npx github)·방법 B(clone) 모두 필요. [git-scm.com](https://git-scm.com) 에서 설치. (`git --version` 으로 확인)
+4. **API 서버 네트워크 접근** — 이 MCP 는 당신 PC 에서 `*.nhplug.com` API 서버로 직접 연결합니다. 사내망 등에서만 접근 가능한 환경이라면, MCP 를 실행하는 PC 도 그 네트워크에 있어야 합니다.
 
 ---
 
 ## 2. 설치 및 실행
 
-### 방법 A — 로컬 빌드 (지금 바로 사용)
+### 방법 A — npx로 GitHub에서 바로 실행 (권장, 설치 불필요)
+
+별도 다운로드·빌드 없이 Claude 설정 한 줄이면 됩니다. 고객용 설정에 아래 `command`/`args` 를 씁니다(전체 설정은 3번).
+
+```json
+"command": "npx",
+"args": ["-y", "github:plug-support/nhplug-mcp"]
+```
+
+> **첫 실행 예열(권장):** npx 는 첫 실행 때 GitHub 에서 받아 빌드하느라 1분 정도 걸립니다. Claude 가 기다리다 실패하지 않도록, 터미널에서 한 번 미리 실행해 두면 좋습니다:
+> ```powershell
+> npx -y github:plug-support/nhplug-mcp
+> ```
+> `[nhplug-mcp] 시작됨 ...` 로그가 뜨면 `Ctrl + C` 로 종료. 이후 Claude 실행이 빨라집니다.
+>
+> **업데이트 반영:** npx 는 받은 코드를 캐시합니다. 새 버전을 받으려면 `npm cache clean --force` 후 Claude 재시작.
+
+### 방법 B — git clone 후 로컬 빌드
 
 ```bash
-# 저장소를 받은 폴더에서
+git clone https://github.com/plug-support/nhplug-mcp.git
+cd nhplug-mcp
 npm install
 npm run build
 ```
 
-빌드가 끝나면 `dist/index.js` 가 생성됩니다. 이 경로를 Claude 설정에 등록합니다(3번 참고).
-
-### 방법 B — npx (npm 배포 후)
-
-배포가 완료되면 설치 없이 아래 한 줄 설정으로 사용할 수 있습니다.
-
-```json
-"command": "npx",
-"args": ["-y", "@nhplug/mcp-server"]
-```
+빌드가 끝나면 `dist/index.js` 가 생성됩니다. 이 경로를 Claude 설정에 `"command": "node", "args": ["<경로>/dist/index.js"]` 로 등록합니다.
 
 ---
 
@@ -45,17 +55,17 @@ npm run build
 
 Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **가장 쉬운 방법**: Claude Desktop → **설정(Settings)** → **개발자(Developer)** → **Edit Config** 버튼.
+- 직접 열기 — **Windows**: `%APPDATA%\Claude\claude_desktop_config.json` · **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-아래 내용을 추가합니다. (방법 A · 로컬 빌드 기준. 경로는 실제 설치 위치로 변경)
+아래 내용을 붙여넣습니다. (방법 A · GitHub npx 기준)
 
 ```json
 {
   "mcpServers": {
     "nhplug": {
-      "command": "node",
-      "args": ["C:\\path\\to\\nhplug-mcp\\dist\\index.js"],
+      "command": "npx",
+      "args": ["-y", "github:plug-support/nhplug-mcp"],
       "env": {
         "NHPLUG_APP_KEY": "발급받은_APP_KEY",
         "NHPLUG_APP_SECRET": "발급받은_APP_SECRET",
@@ -67,9 +77,11 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 }
 ```
 
-저장 후 **Claude Desktop 을 완전히 종료했다가 다시 실행**하면 `nhplug` 도구가 나타납니다.
+저장 후 **Claude Desktop 을 완전히 종료(트레이 포함)했다가 다시 실행**하면 `nhplug` 도구가 나타납니다.
 
-> 키를 설정 파일에 직접 넣는 대신, 저장소 폴더에 `.env` 파일(`.env.example` 참고)을 두는 방식도 지원합니다.
+> **JSON 주의:** 항목 사이엔 콤마(`,`), 마지막 항목 뒤엔 콤마 없음. Windows 경로의 `\` 는 `\\` 로 두 개씩. 이미 다른 서버가 있으면 `"nhplug": { ... }` 블록만 `mcpServers` 안에 추가하세요.
+>
+> 방법 B(로컬 빌드)를 쓰면 `command` 를 `"node"`, `args` 를 `["C:\\경로\\nhplug-mcp\\dist\\index.js"]` 로 바꾸면 됩니다. 키는 설정의 `env` 대신 저장소 폴더의 `.env` 파일(`.env.example` 참고)로 넣어도 됩니다.
 
 ---
 
@@ -112,6 +124,7 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 - "삼성전자(005930) 현재가 알려줘" → `get_stock_price`
 - "국내주식 시세 관련 API 목록 보여줘" → `list_apis`
 - "krstockQuoteCurrentDaily 는 어떤 입력이 필요해?" → `describe_api`
+- "내 계좌 목록 보여줘" → `list_accounts`
 - "내 계좌 20101036881 잔고 조회해줘" → `get_stock_balance`
 
 ---
