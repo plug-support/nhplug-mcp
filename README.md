@@ -129,15 +129,19 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 
 ---
 
-## 6. 주문(거래) 활성화 ⚠️
+## 6. 주문(거래)에 대하여 ⚠️
 
-주문 API(매수/매도/정정/취소)는 **실제 자산이 오가는 기능**이라 기본적으로 **숨겨져 있습니다.** 활성화하려면:
+> **중요 — 대화형 AI 는 실제 주문을 대신 체결하지 않습니다.**
+> Claude 등 AI 어시스턴트는 안전정책상 사용자를 대신해 증권 주문을 실행하지 않습니다. 이는 MCP 설정(`NHPLUG_ENABLE_TRADING`)이나 환경과 무관한 **모델 자체의 동작**이라, 서버에서 끌 수 없습니다.
+>
+> 따라서 이 MCP 는 **시세·계좌 조회, 분석, 주문 파라미터 준비**까지 담당하고, **실제 매수/매도 실행은 코드로** 하세요:
+> - 파이썬 개발·자동매매: [`nhplug-sdk`](https://github.com/plug-support/nhplug-sdk)
+> - 주문 API 단발 테스트(사람이 직접 실행): `node scripts/order_test.mjs --account <계좌> --code 005930 --qty 1 --price 70000 --confirm`
 
-1. `NHPLUG_ENABLE_TRADING=true` 로 설정하고 Claude Desktop 재시작.
-2. 반드시 **모의투자 환경(`devmoapi`/`moapi`)** 에서 충분히 검증 후 사용하세요.
-3. 실거래 환경에서는 Claude 가 주문을 실행하기 전에 사람이 직접 확인하는 절차를 권장합니다.
+`NHPLUG_ENABLE_TRADING=true` 설정은 주문 API 를 **도구 목록에 노출**만 합니다(설계·검증용). 실행은 위 코드 경로를 사용하세요.
 
-비활성 상태에서는 주문 도구가 `list_apis` 에도 표시되지 않고, `call_api` 로 시도해도 거부됩니다.
+- 기본값 `false` 이면 주문 API 는 `list_apis` 에 표시되지 않고 `call_api` 로도 거부됩니다.
+- 주문 관련 작업은 반드시 **모의투자 환경(`devmoapi`/`moapi`)** 에서 충분히 검증 후 진행하세요.
 
 ---
 
