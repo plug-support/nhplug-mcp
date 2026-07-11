@@ -112,7 +112,7 @@ export function registerTools(server: McpServer, config: Config): void {
       operationId: z.string().describe("호출할 operationId"),
       input: z
         .record(z.any())
-        .describe("Input_0 에 들어갈 파라미터 객체 (예: { shrn_iscd: '005930' })"),
+        .describe("Input_0 에 들어갈 파라미터 객체 (예: { iem_cd: '005930', market_cd: 'KRX' })"),
       cts: z.string().optional().describe("연속조회(페이지네이션) 키. 목록 조회 다음 페이지에 사용."),
     },
     async ({ operationId, input, cts }) => {
@@ -142,7 +142,8 @@ export function registerTools(server: McpServer, config: Config): void {
     async ({ stock_code }) => {
       try {
         const res = await callRest(config, "/krstock/quote/v1/currentPrice", {
-          shrn_iscd: stock_code,
+          iem_cd: stock_code,
+          market_cd: "KRX",
         });
         return textResult(res);
       } catch (e) {
@@ -170,7 +171,7 @@ export function registerTools(server: McpServer, config: Config): void {
           bnc_bse_cd: "5",
           ltg_aot_dit_cd: "9",
           aet_bse: "2",
-          qut_dit_cd: " ",
+          qut_dit_cd: "UNT",
         });
         return textResult(res);
       } catch (e) {

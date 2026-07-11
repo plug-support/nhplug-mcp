@@ -35,7 +35,7 @@ export function loadConfig(): Config {
       "NHPLUG_APP_SECRET",
       process.env.NHPLUG_APP_SECRET ?? process.env.APP_SECRET
     ),
-    baseUrl: (process.env.NHPLUG_BASE_URL ?? "https://devmoapi.nhplug.com:8443").trim(),
+    baseUrl: (process.env.NHPLUG_BASE_URL ?? "https://devapi.nhplug.com:8443").trim(),
     enableTrading: enable === "true" || enable === "1" || enable === "yes",
     defaultAccount: (process.env.NHPLUG_DEFAULT_ACCOUNT ?? "").trim(),
   };

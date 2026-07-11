@@ -45,7 +45,7 @@ async function main() {
   const env = loadEnv();
   const appKey = env.NHPLUG_APP_KEY || env.APP_KEY;
   const appSecret = env.NHPLUG_APP_SECRET || env.APP_SECRET;
-  const baseUrl = env.NHPLUG_BASE_URL || "https://devmoapi.nhplug.com:8443";
+  const baseUrl = env.NHPLUG_BASE_URL || "https://devapi.nhplug.com:8443";
 
   if (!appKey || !appSecret) { console.error("✗ .env 에 APP_KEY/APP_SECRET 없음"); process.exit(1); }
   if (!args.account || !args.code || !args.qty) {

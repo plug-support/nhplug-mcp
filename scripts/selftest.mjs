@@ -28,7 +28,7 @@ async function main() {
   const env = loadEnv();
   const appKey = env.NHPLUG_APP_KEY || env.APP_KEY;
   const appSecret = env.NHPLUG_APP_SECRET || env.APP_SECRET;
-  const baseUrl = env.NHPLUG_BASE_URL || "https://devmoapi.nhplug.com:8443";
+  const baseUrl = env.NHPLUG_BASE_URL || "https://devapi.nhplug.com:8443";
 
   if (!appKey || !appSecret) {
     console.error("✗ .env 에 NHPLUG_APP_KEY / NHPLUG_APP_SECRET 이 없습니다.");
@@ -70,7 +70,7 @@ async function main() {
       authorization: `Bearer ${token}`,
       "content-type": "application/json; charset=UTF-8",
     },
-    body: JSON.stringify({ Input_0: { shrn_iscd: "005930" } }),
+    body: JSON.stringify({ Input_0: { iem_cd: "005930", market_cd: "KRX" } }),
   });
   const pText = await pRes.text();
   if (!pRes.ok) {
