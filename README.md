@@ -1,12 +1,12 @@
 # NH투자증권 Open API — Local MCP Server
 
-NH투자증권 Open API 를 **Claude Desktop** 등 MCP 클라이언트에서 바로 사용할 수 있게 해주는 로컬 MCP 서버입니다. 국내주식(krstock) 자산군의 시세·조회·주문 API 를 Claude 가 도구로 호출합니다.
+NH투자증권 Open API 를 **Claude Desktop** 등 MCP 클라이언트에서 바로 사용할 수 있게 해주는 로컬 MCP 서버입니다. 국내주식(krstock)·해외주식(gbstock) 자산군의 시세·조회·주문 API 를 Claude 가 도구로 호출합니다.
 
 - 인증 · 토큰 발급 · 헤더 · `Input_0` 봉투 처리를 서버가 자동으로 대신합니다.
 - 131개 엔드포인트를 몇 개의 **메타 도구**로 노출해, 도구가 많아 성능이 떨어지는 문제를 피합니다.
 - 주문(거래) API 는 **기본 비활성**이며, 명시적으로 켠 경우에만 사용됩니다.
 
-> 현재 버전은 **국내주식(krstock)** 자산군만 포함한 MVP 입니다. 다른 자산군은 `specs/` 폴더에 openapi.json 을 추가하면 확장됩니다(맨 아래 참고).
+> 현재 버전은 **국내주식(krstock)·해외주식(gbstock)** 자산군을 포함합니다. 다른 자산군은 `specs/` 폴더에 openapi.json 을 추가하면 확장됩니다(맨 아래 참고).
 
 ---
 
