@@ -27,6 +27,7 @@
     "start": "node dist/index.js",
     "dev": "tsc && node dist/index.js",
     "selftest": "node scripts/selftest.mjs",
+    "sync:specs": "node scripts/sync_specs.mjs",
     "prepare": "tsc",
     "prepublishOnly": "tsc"
   },

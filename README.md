@@ -178,7 +178,16 @@ node scripts/selftest.mjs
 
 ## 9. 자산군 확장
 
-다른 자산군을 추가하려면 해당 `openapi.json` 을 `specs/` 폴더에 `<도메인>.openapi.json` 이름으로 넣고 다시 빌드하면 됩니다. 예:
+스펙 정본은 **도메인**(`https://www.nhplug.com/openapi-docs/<자산>/openapi.json`)입니다. 번들(`specs/`)은 `sync:specs` 로 도메인에서 당겨 최신화합니다:
+
+```bash
+npm run sync:specs                    # specs/ 에 이미 있는 자산 최신화
+npm run sync:specs krstock gbstock    # 지정 자산 받기(신규 추가)
+```
+
+> ⚠️ **커밋 전 검증 필수**: 받은 뒤 MCP `call_api` 로 라이브 A/B(현재가·잔고)를 확인하고 커밋하세요. 도메인 재생성이 회귀할 수 있으므로, 번들은 이 **검증 게이트**를 거쳐 반영합니다(런타임은 항상 번들을 읽습니다).
+
+수동으로 `openapi.json` 을 `specs/` 에 `<도메인>.openapi.json` 이름으로 넣어도 됩니다. 예:
 
 ```
 specs/
