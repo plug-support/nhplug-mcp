@@ -3,20 +3,16 @@
   "info": {
     "title": "NH투자증권 Open API — 해외주식 (Global Stock)",
     "version": "v1",
-    "description": "NH투자증권 Open API 중 **해외주식 (Global Stock)** 자산군의 REST 및 실시간(WebSocket) API 문서입니다. (기준: API명세서 260721 / 나무 환경 · 필드명은 명세서 C열 기준)\n\n- REST: POST + JSON, 요청 Input_0 / 응답 Output_0(배열) + message.\n- 실시간: WebSocket, 푸시=JSON. x-realtime-channels.protocol 참조.\n- 인증: POST /oauth2/token → REST 는 Authorization/x-client-id/x-client-secret, WS 는 header.token."
+    "description": "NH투자증권 Open API 중 **해외주식 (Global Stock)** 자산군의 REST 및 실시간(WebSocket) API 문서입니다. (기준: API명세서 260721 / 나무 환경 · 필드명은 명세서 C열 기준)\n\n- REST: POST + JSON, 요청 Input_0 / 응답 Output_0(배열) + message.\n- 실시간: WebSocket, 푸시=JSON. x-realtime-channels.protocol 참조.\n- 인증: POST /oauth2/token → REST 는 Authorization/x-client-id/x-client-secret, WS 는 header.token.\n- 환경 제공: 이 자산군 API 는 **모의투자·운영 모두 제공**. (접근토큰발급만 공통에서 운영 전용)"
   },
   "servers": [
     {
-      "url": "https://devapi.nhplug.com:8443",
-      "description": "🟢 테스트 (Test) — 실매매 전 검증 [기본]"
+      "url": "https://api.nhplug.com:8443",
+      "description": "🔴 운영 (Live) — 실제 주문 체결 [기본]"
     },
     {
       "url": "https://moapi.nhplug.com:8443",
-      "description": "🟢 모의투자 (Mock) — 교육이수"
-    },
-    {
-      "url": "https://api.nhplug.com:8443",
-      "description": "🔴 실거래 (Live) — 실제 주문 체결 (검증 후에만)"
+      "description": "🟢 모의투자 (Mock) — 교육이수·개발·검증"
     }
   ],
   "security": [
@@ -28,19 +24,14 @@
   ],
   "x-environments": {
     "portal": "https://www.nhplug.com",
-    "note": "⚠️ 실주문은 실거래(live)에서만 체결. 개발·검증은 test/mock 우선. 순서: 테스트/모의→검증→실거래. 나무(Namuh) 기준(N2 추후).",
-    "test": {
-      "desc": "테스트 — 실매매 전 검증",
-      "rest": "https://devapi.nhplug.com:8443",
-      "websocket": "wss://devapi.nhplug.com:7080"
-    },
+    "note": "기본 환경은 **운영(live)** 입니다. 운영은 주문이 실제로 체결됩니다. 테스트·검증은 모의투자(mock)를 사용하세요. 나무(Namuh) 기준(N2 추후).",
     "mock": {
-      "desc": "모의투자 — 교육이수",
+      "desc": "모의투자 — 교육이수·개발검증",
       "rest": "https://moapi.nhplug.com:8443",
       "websocket": "wss://moapi.nhplug.com:17070"
     },
     "live": {
-      "desc": "실거래 — 실제 주문 체결",
+      "desc": "운영 — 실제 주문 체결",
       "rest": "https://api.nhplug.com:8443",
       "websocket": "wss://api.nhplug.com:7080"
     }
@@ -3908,11 +3899,10 @@
     }
   },
   "x-realtime-channels": {
-    "endpoint": "wss://devapi.nhplug.com:7080",
+    "endpoint": "wss://api.nhplug.com:7080",
     "endpoints": {
-      "test": "wss://devapi.nhplug.com:7080",
-      "mock": "wss://moapi.nhplug.com:17070",
-      "live": "wss://api.nhplug.com:7080"
+      "live": "wss://api.nhplug.com:7080",
+      "mock": "wss://moapi.nhplug.com:17070"
     },
     "protocol": {
       "transport": "WebSocket",

@@ -13,6 +13,7 @@ export interface Config {
   appKey: string;
   appSecret: string;
   baseUrl: string;
+  authUrl: string;
   enableTrading: boolean;
   defaultAccount: string;
 }
@@ -35,7 +36,10 @@ export function loadConfig(): Config {
       "NHPLUG_APP_SECRET",
       process.env.NHPLUG_APP_SECRET ?? process.env.APP_SECRET
     ),
-    baseUrl: (process.env.NHPLUG_BASE_URL ?? "https://devapi.nhplug.com:8443").trim(),
+    // 호출 대상. 기본 운영(api). 교육·시뮬레이션은 moapi 로 설정.
+    baseUrl: (process.env.NHPLUG_BASE_URL ?? "https://api.nhplug.com:8443").trim(),
+    // 토큰(/oauth2/token)은 운영(api) 전용 — moapi 미제공. 호출 대상과 무관하게 항상 api 로 발급.
+    authUrl: (process.env.NHPLUG_AUTH_URL ?? "https://api.nhplug.com:8443").trim(),
     enableTrading: enable === "true" || enable === "1" || enable === "yes",
     defaultAccount: (process.env.NHPLUG_DEFAULT_ACCOUNT ?? "").trim(),
   };

@@ -72,7 +72,7 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
       "env": {
         "NHPLUG_APP_KEY": "발급받은_APP_KEY",
         "NHPLUG_APP_SECRET": "발급받은_APP_SECRET",
-        "NHPLUG_BASE_URL": "https://devapi.nhplug.com:8443",
+        "NHPLUG_BASE_URL": "https://api.nhplug.com:8443",
         "NHPLUG_ENABLE_TRADING": "false"
       }
     }
@@ -94,7 +94,8 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 |---|---|---|
 | `NHPLUG_APP_KEY` | ✅ | 발급받은 앱키 |
 | `NHPLUG_APP_SECRET` | ✅ | 발급받은 앱시크릿 |
-| `NHPLUG_BASE_URL` | | REST Base URL. 기본값 `https://devapi.nhplug.com:8443` (테스트) |
+| `NHPLUG_BASE_URL` | | 호출 대상 REST Base URL. 기본값 `https://api.nhplug.com:8443` (운영). 교육·시뮬레이션은 `https://moapi.nhplug.com:8443` |
+| `NHPLUG_AUTH_URL` | | 토큰 발급 URL. 기본 `https://api.nhplug.com:8443` (운영 전용 — moapi 미제공). 보통 그대로 둡니다 |
 | `NHPLUG_ENABLE_TRADING` | | `true` 일 때만 주문(거래) 도구 노출. 기본 `false` |
 | `NHPLUG_DEFAULT_ACCOUNT` | | 잔고/주문 단축 도구에서 계좌번호 생략 시 사용 |
 
@@ -102,9 +103,10 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 
 | 환경 | URL |
 |---|---|
-| 🟢 테스트 (Test) — 실매매 전 검증 [기본] | `https://devapi.nhplug.com:8443` |
-| 🟢 모의투자 (Mock) — 교육이수 | `https://moapi.nhplug.com:8443` |
-| 🔴 실거래 (Live) — 검증 후에만 | `https://api.nhplug.com:8443` |
+| 🔴 실거래·운영 (Live) — 기본 | `https://api.nhplug.com:8443` |
+| 🟢 모의투자 (Mock) — 교육이수·시뮬레이션 테스트 | `https://moapi.nhplug.com:8443` |
+
+> 접근토큰(`/oauth2/token`)은 **운영(api) 전용**입니다(모의투자 미제공). 호출을 `moapi` 로 하더라도 토큰은 항상 `api` 에서 발급됩니다(`NHPLUG_AUTH_URL`, 기본 api). MCP 는 Claude 정책상 주문을 실행하지 않으므로, 기본이 운영이어도 **조회·시세만** 수행합니다.
 
 ---
 
@@ -143,7 +145,7 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 `NHPLUG_ENABLE_TRADING=true` 설정은 주문 API 를 **도구 목록에 노출**만 합니다(설계·검증용). 실행은 위 코드 경로를 사용하세요.
 
 - 기본값 `false` 이면 주문 API 는 `list_apis` 에 표시되지 않고 `call_api` 로도 거부됩니다.
-- 주문 관련 작업은 반드시 **테스트/모의투자 환경(`devapi`/`moapi`)** 에서 충분히 검증 후 진행하세요.
+- 주문 관련 작업은 반드시 **모의투자 환경(`moapi`)** 에서 충분히 검증 후 진행하세요.
 
 ---
 

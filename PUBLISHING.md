@@ -44,7 +44,7 @@ npm publish
       "env": {
         "NHPLUG_APP_KEY": "고객_APP_KEY",
         "NHPLUG_APP_SECRET": "고객_APP_SECRET",
-        "NHPLUG_BASE_URL": "https://devapi.nhplug.com:8443",
+        "NHPLUG_BASE_URL": "https://api.nhplug.com:8443",
         "NHPLUG_ENABLE_TRADING": "false"
       }
     }
@@ -77,7 +77,7 @@ GitHub 저장소(`nhsec/nhplug-mcp`)에 이 폴더 내용을 push. (`dist/`·`no
       "env": {
         "NHPLUG_APP_KEY": "고객_APP_KEY",
         "NHPLUG_APP_SECRET": "고객_APP_SECRET",
-        "NHPLUG_BASE_URL": "https://devapi.nhplug.com:8443"
+        "NHPLUG_BASE_URL": "https://api.nhplug.com:8443"
       }
     }
   }

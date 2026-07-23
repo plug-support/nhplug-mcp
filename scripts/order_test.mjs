@@ -45,7 +45,8 @@ async function main() {
   const env = loadEnv();
   const appKey = env.NHPLUG_APP_KEY || env.APP_KEY;
   const appSecret = env.NHPLUG_APP_SECRET || env.APP_SECRET;
-  const baseUrl = env.NHPLUG_BASE_URL || "https://devapi.nhplug.com:8443";
+  const baseUrl = env.NHPLUG_BASE_URL || "https://api.nhplug.com:8443";
+  const authUrl = env.NHPLUG_AUTH_URL || "https://api.nhplug.com:8443"; // 토큰은 운영(api) 전용
 
   if (!appKey || !appSecret) { console.error("✗ .env 에 APP_KEY/APP_SECRET 없음"); process.exit(1); }
   if (!args.account || !args.code || !args.qty) {
@@ -78,7 +79,7 @@ async function main() {
   }
 
   // 1) 토큰
-  const tUrl = new URL(`${baseUrl}/oauth2/token`);
+  const tUrl = new URL(`${authUrl}/oauth2/token`);
   tUrl.searchParams.set("appkey", appKey);
   tUrl.searchParams.set("appsecretkey", appSecret);
   tUrl.searchParams.set("grant_type", "client_credentials");

@@ -22,7 +22,7 @@ export async function getAccessToken(config: Config): Promise<string> {
     return cached.token;
   }
 
-  const url = new URL(`${config.baseUrl}/oauth2/token`);
+  const url = new URL(`${config.authUrl}/oauth2/token`);
   url.searchParams.set("appkey", config.appKey);
   url.searchParams.set("appsecretkey", config.appSecret);
   url.searchParams.set("grant_type", "client_credentials");
@@ -36,7 +36,7 @@ export async function getAccessToken(config: Config): Promise<string> {
     });
   } catch (e) {
     throw new Error(
-      `토큰 발급 요청 실패 (네트워크). API 서버(${config.baseUrl})에 접근 가능한 환경인지 확인하세요. 원인: ${String(e)}`
+      `토큰 발급 요청 실패 (네트워크). 인증 서버(${config.authUrl}, 운영 전용)에 접근 가능한 환경인지 확인하세요. 원인: ${String(e)}`
     );
   }
 

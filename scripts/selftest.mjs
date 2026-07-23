@@ -28,7 +28,8 @@ async function main() {
   const env = loadEnv();
   const appKey = env.NHPLUG_APP_KEY || env.APP_KEY;
   const appSecret = env.NHPLUG_APP_SECRET || env.APP_SECRET;
-  const baseUrl = env.NHPLUG_BASE_URL || "https://devapi.nhplug.com:8443";
+  const baseUrl = env.NHPLUG_BASE_URL || "https://api.nhplug.com:8443";
+  const authUrl = env.NHPLUG_AUTH_URL || "https://api.nhplug.com:8443"; // 토큰은 운영(api) 전용
 
   if (!appKey || !appSecret) {
     console.error("✗ .env 에 NHPLUG_APP_KEY / NHPLUG_APP_SECRET 이 없습니다.");
@@ -37,7 +38,7 @@ async function main() {
   console.log(`· baseUrl = ${baseUrl}`);
 
   // 1) 토큰 발급
-  const tokenUrl = new URL(`${baseUrl}/oauth2/token`);
+  const tokenUrl = new URL(`${authUrl}/oauth2/token`);
   tokenUrl.searchParams.set("appkey", appKey);
   tokenUrl.searchParams.set("appsecretkey", appSecret);
   tokenUrl.searchParams.set("grant_type", "client_credentials");
@@ -79,7 +80,7 @@ async function main() {
   }
   const data = JSON.parse(pText);
   const o0 = data.Output_0 || {};
-  console.log(`✓ 현재가 조회 성공: ${o0.hts_isnm ?? ""} 현재가 ${o0.stck_prpr ?? "?"}`);
+  console.log(`✓ 현재가 조회 성공: ${o0.iem_nm ?? ""} 현재가 ${o0.stck_prpr ?? "?"}`);
   console.log("\n전체 검증 통과 ✅  MCP 서버를 Claude 에 연결해 사용할 수 있습니다.");
 }
 
