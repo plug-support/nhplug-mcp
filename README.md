@@ -1,5 +1,8 @@
 # NH투자증권 Open API — Local MCP Server
 
+> 🏛️ **NH투자증권 공식 Open API(NHPLUG) 지원 저장소입니다.** &nbsp;·&nbsp; 포털 [www.nhplug.com](https://www.nhplug.com) &nbsp;·&nbsp; 문의 apisupport@nhsec.com
+> 코드로 개발·자동매매하려면 → [`nhplug-sdk`](https://github.com/plug-support/nhplug-sdk) &nbsp;|&nbsp; 대화형 AI로 쓰려면 → 이 저장소(`nhplug-mcp`)
+
 NH투자증권 Open API 를 **Claude Desktop** 등 MCP 클라이언트에서 바로 사용할 수 있게 해주는 로컬 MCP 서버입니다. 국내주식(krstock)·해외주식(gbstock) 자산군의 시세·조회·주문 API 를 Claude 가 도구로 호출합니다.
 
 - 인증 · 토큰 발급 · 헤더 · `Input_0` 봉투 처리를 서버가 자동으로 대신합니다.
