@@ -16,9 +16,9 @@ let cached: TokenState | null = null;
  *   → { access_token, expires_in?, ... }
  * 발급된 토큰은 만료 전까지 메모리에 캐시합니다.
  */
-export async function getAccessToken(config: Config): Promise<string> {
+export async function getAccessToken(config: Config, force = false): Promise<string> {
   const now = Date.now();
-  if (cached && cached.expiresAt > now + 30_000) {
+  if (!force && cached && cached.expiresAt > now + 30_000) {
     return cached.token;
   }
 
@@ -28,42 +28,51 @@ export async function getAccessToken(config: Config): Promise<string> {
   url.searchParams.set("grant_type", "client_credentials");
   url.searchParams.set("scope", "oob");
 
-  let res: Response;
-  try {
-    res = await fetch(url.toString(), {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-    });
-  } catch (e) {
-    throw new Error(
-      `토큰 발급 요청 실패 (네트워크). 인증 서버(${config.authUrl}, 운영 전용)에 접근 가능한 환경인지 확인하세요. 원인: ${String(e)}`
-    );
-  }
+  let lastErr = "";
+  // 토큰 발급 일시장애(IGW40054 등)에는 짧게 재시도. 유효하지 않은 AppKey(IGW40031)는 즉시 중단.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    let res: Response;
+    try {
+      res = await fetch(url.toString(), {
+        method: "POST",
+        headers: { "content-type": "application/x-www-form-urlencoded" },
+      });
+    } catch (e) {
+      lastErr = `네트워크 오류 — ${String(e)}`;
+      await new Promise((r) => setTimeout(r, 300 * (attempt + 1)));
+      continue;
+    }
 
-  const text = await res.text();
-  if (!res.ok) {
-    throw new Error(`토큰 발급 실패 (HTTP ${res.status}): ${text.slice(0, 500)}`);
-  }
+    const text = await res.text();
+    if (res.ok) {
+      let data: any;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(`토큰 응답이 JSON 이 아닙니다: ${text.slice(0, 300)}`);
+      }
+      const token: string | undefined = data.access_token ?? data.accessToken;
+      if (!token) {
+        throw new Error(`토큰 응답에 access_token 이 없습니다: ${text.slice(0, 300)}`);
+      }
+      // expires_in(초)이 오면 사용, 없으면 24h. 무효 응답 시 client 의 자동 재발급이 안전망.
+      const expiresInSec = Number(data.expires_in ?? data.expiresIn ?? 86400);
+      cached = {
+        token,
+        expiresAt: now + (Number.isFinite(expiresInSec) ? expiresInSec : 86400) * 1000,
+      };
+      return token;
+    }
 
-  let data: any;
-  try {
-    data = JSON.parse(text);
-  } catch {
-    throw new Error(`토큰 응답이 JSON 이 아닙니다: ${text.slice(0, 300)}`);
+    lastErr = `HTTP ${res.status} — ${text.slice(0, 300)}`;
+    // 일시장애면 재시도, 그 외(키 오류 등)는 즉시 실패
+    if (text.includes("IGW40054") && attempt < 2) {
+      await new Promise((r) => setTimeout(r, 400 * (attempt + 1)));
+      continue;
+    }
+    throw new Error(`토큰 발급 실패 (인증서버 ${config.authUrl}, 운영 전용): ${lastErr}`);
   }
-
-  const token: string | undefined = data.access_token ?? data.accessToken;
-  if (!token) {
-    throw new Error(`토큰 응답에 access_token 이 없습니다: ${text.slice(0, 300)}`);
-  }
-
-  // expires_in(초) 이 오면 사용, 없으면 보수적으로 10분 캐시
-  const expiresInSec = Number(data.expires_in ?? data.expiresIn ?? 600);
-  cached = {
-    token,
-    expiresAt: now + (Number.isFinite(expiresInSec) ? expiresInSec : 600) * 1000,
-  };
-  return token;
+  throw new Error(`토큰 발급 실패 (재시도 후에도): ${lastErr}`);
 }
 
 /** 테스트/디버그용: 토큰 캐시 강제 초기화 */
