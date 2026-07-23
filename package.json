@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "NH투자증권 Open API를 Claude 등 MCP 클라이언트에서 사용하기 위한 로컬 MCP 서버",
   "license": "MIT",
-  "author": "NH Investment & Securities Open API (apisupport@nhsec.com)",
+  "author": "NH Investment & Securities Co., Ltd. (apisupport@nhsec.com)",
   "homepage": "https://www.nhplug.com/intro",
   "repository": {
     "type": "git",
