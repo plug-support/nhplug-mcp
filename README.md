@@ -72,8 +72,7 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
       "env": {
         "NHPLUG_APP_KEY": "발급받은_APP_KEY",
         "NHPLUG_APP_SECRET": "발급받은_APP_SECRET",
-        "NHPLUG_BASE_URL": "https://api.nhplug.com:8443",
-        "NHPLUG_ENABLE_TRADING": "false"
+        "NHPLUG_BASE_URL": "https://api.nhplug.com:8443"
       }
     }
   }
