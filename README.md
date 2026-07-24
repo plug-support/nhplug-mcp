@@ -81,6 +81,8 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 
 저장 후 **Claude Desktop 을 완전히 종료(트레이 포함)했다가 다시 실행**하면 `nhplug` 도구가 나타납니다.
 
+> **N2 고객**은 위 `env` 에 두 줄을 n2plug 로 추가하세요: `"NHPLUG_BASE_URL": "https://api.n2plug.com:8443"`, `"NHPLUG_AUTH_URL": "https://api.n2plug.com:8443"`. (개발·검증은 BASE_URL 을 `moapi.n2plug.com`, AUTH_URL 은 `api.n2plug.com` 유지)
+
 > **JSON 주의:** 항목 사이엔 콤마(`,`), 마지막 항목 뒤엔 콤마 없음. Windows 경로의 `\` 는 `\\` 로 두 개씩. 이미 다른 서버가 있으면 `"nhplug": { ... }` 블록만 `mcpServers` 안에 추가하세요.
 >
 > 방법 B(로컬 빌드)를 쓰면 `command` 를 `"node"`, `args` 를 `["C:\\경로\\nhplug-mcp\\dist\\index.js"]` 로 바꾸면 됩니다. 키는 설정의 `env` 대신 저장소 폴더의 `.env` 파일(`.env.example` 참고)로 넣어도 됩니다.
@@ -106,6 +108,17 @@ Claude Desktop 설정 파일 `claude_desktop_config.json` 을 엽니다.
 | 🟢 모의투자 (Mock) — 교육이수·시뮬레이션 테스트 | `https://moapi.nhplug.com:8443` |
 
 > 접근토큰(`/oauth2/token`)은 **운영(api) 전용**입니다(모의투자 미제공). 호출을 `moapi` 로 하더라도 토큰은 항상 `api` 에서 발급됩니다(`NHPLUG_AUTH_URL`, 기본 api). MCP 는 Claude 정책상 주문을 실행하지 않으므로, 기본이 운영이어도 **조회·시세만** 수행합니다.
+
+### 브랜드(도메인) — 나무(Namuh) / N2
+
+API·필드는 동일하고 **접속 도메인만 다릅니다.** 위 예시는 나무(`nhplug.com`) 기준입니다.
+
+| 브랜드 | 운영 | 모의투자 | 포털 |
+|---|---|---|---|
+| 나무(Namuh) | `api.nhplug.com:8443` | `moapi.nhplug.com:8443` | `www.nhplug.com` |
+| N2 | `api.n2plug.com:8443` | `moapi.n2plug.com:8443` | `www.n2plug.com` |
+
+> ⚠️ **N2 고객**은 설정의 `NHPLUG_BASE_URL` 과 `NHPLUG_AUTH_URL` 을 **둘 다** n2plug 로 지정하세요. AUTH_URL 까지 안 바꾸면 토큰이 나무로 가서 실패합니다.
 
 ---
 
